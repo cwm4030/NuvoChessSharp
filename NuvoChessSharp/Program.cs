@@ -4,9 +4,9 @@ namespace NuvoChessSharp;
 
 public static class Program
 {
-    public static void Main()
+    public static void Main(string[] args)
     {
         var uci = new Uci();
-        uci.Listen();
+        uci.Listen(args);
     }
 }

@@ -6,13 +6,13 @@ public class Uci
 {
     public Board Board { get; set; } = new();
 
-    public void Listen()
+    public void Listen(string[] args)
     {
+        var input = args.Length > 0 ? args : Input.GetInput();
         while (true)
         {
-            var input = Input.GetInput();
-            if (Execute(input))
-                break;
+            if (Execute(input)) break;
+            input = Input.GetInput();
         }
     }
 
