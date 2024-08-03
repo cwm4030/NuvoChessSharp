@@ -14,12 +14,7 @@ public class Board
     public ushort HalfMove { get; set; } = 0;
     public ushort FullMove { get; set; } = 1;
 
-    public Board()
-    {
-        SetDefaultPieceList();
-        SetDefaultSquareList();
-        SetFromFen(Fen.StartPosition);
-    }
+    public Board() => SetFromFen(Fen.StartPosition);
 
     public void SetFromFen(string[] fen)
     {
@@ -31,6 +26,8 @@ public class Board
         var fenHalfMove = fen[4];
         var fenFullMove = fen[5];
 
+        SetDefaultPieceList();
+        SetDefaultSquareList();
         ushort boardIndex = 0;
         foreach (var c in fenPieceLocations)
         {
