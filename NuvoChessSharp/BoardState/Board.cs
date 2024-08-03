@@ -144,6 +144,8 @@ public class Board
 
     private void SetDefaultPieceList()
     {
+        PieceListWhiteIndex = Pieces.White + 1;
+        PieceListBlackIndex = Pieces.Black + 1;
         for (ushort i = 0; i < PieceList.Length; i++)
             PieceList[i] = new Piece { Color = Pieces.Empty, PieceType = Pieces.Empty, Location = Pieces.OffBoard };
     }
