@@ -1,6 +1,6 @@
 namespace NuvoChessSharp.BoardState;
 
-public static class CastleRights
+public static class Castling
 {
     public const ushort NoCastle = 0;
     public const ushort WhiteKing = 1;
