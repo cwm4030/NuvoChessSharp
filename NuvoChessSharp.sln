@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuvoChessSharp", "NuvoChessSharp\NuvoChessSharp.csproj", "{481D1AEF-C9B2-4D0B-BBDF-C41043334A70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardState", "BoardState\BoardState.csproj", "{92385F42-8758-4A79-B116-D826565C4065}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
