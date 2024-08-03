@@ -5,6 +5,7 @@ namespace NuvoChessSharp.BoardState;
 
 public static class Fen
 {
+    public static readonly string[] StartPosition = ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",  "w", "KQkq",  "-", "0", "1"];
     public static readonly (ushort, ushort)[] ColorPieceTypes = [
         (Pieces.White, Pieces.Pawn),
         (Pieces.White, Pieces.Knight),
@@ -36,14 +37,12 @@ public static class Fen
         '\u265B',
         '\u265A',
     ];
-    public static readonly FrozenSet<char> FenPieceTypesSet = FrozenSet.ToFrozenSet(FenPieceTypes);
     public static readonly FrozenDictionary<char, (ushort, ushort)> FenToColorPieceTypes = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(FenPieceTypes, ColorPieceTypes));
     public static readonly FrozenDictionary<(ushort, ushort), char> ColorPieceTypesToFenFancy = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(ColorPieceTypes, FenFancyPieceTypes));
     public static readonly ushort[] Colors = [Pieces.White, Pieces.Black];
-    public static readonly char[] FenColors = ['w', 'b'];
-    public static readonly FrozenSet<char> FenColorsSet = FrozenSet.ToFrozenSet(FenColors);
-    public static readonly FrozenDictionary<char, ushort> FenToColors = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(FenColors, Colors));
-    public static readonly FrozenDictionary<ushort, char> ColorsToFen = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(Colors, FenColors));
+    public static readonly string[] FenColors = ["w", "b"];
+    public static readonly FrozenDictionary<string, ushort> FenToColors = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(FenColors, Colors));
+    public static readonly FrozenDictionary<ushort, string> ColorsToFen = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(Colors, FenColors));
     public static readonly ushort[] CastleRights = [
         Castling.NoCastle,
         Castling.WhiteKing,
@@ -80,7 +79,13 @@ public static class Fen
         "Qkq",
         "KQkq"
     ];
-    public static readonly FrozenSet<string> FenCastleRightsSet = FrozenSet.ToFrozenSet(FenCastleRights);
     public static readonly FrozenDictionary<string, ushort> FenToCastleRights = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(FenCastleRights, CastleRights));
     public static readonly FrozenDictionary<ushort, string> CastleRightsToFen = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(CastleRights, FenCastleRights));
+    public static readonly ushort[] Increments = [
+        0, 1, 2, 3, 4, 5, 6, 7, 8,
+    ];
+    public static readonly char[] FenIncrements = [
+        '/', '1', '2', '3', '4', '5', '6', '7', '8',
+    ];
+    public static readonly FrozenDictionary<char, ushort> FenToIncrements = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(FenIncrements, Increments));
 }

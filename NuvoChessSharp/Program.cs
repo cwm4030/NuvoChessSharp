@@ -1,9 +1,12 @@
-﻿namespace NuvoChessSharp;
+﻿using NuvoChessSharp.BoardState;
+
+namespace NuvoChessSharp;
 
 public static class Program
 {
     public static void Main()
     {
-        Console.WriteLine("Hello, World!");
+        var board = new Board();
+        board.PrintFancyBoard();
     }
 }

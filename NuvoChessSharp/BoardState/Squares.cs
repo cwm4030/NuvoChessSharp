@@ -3,7 +3,7 @@ using NuvoChessSharp.Helpers;
 
 namespace NuvoChessSharp.BoardState;
 
-public static class BoardState
+public static class Squares
 {
     public const ushort A8 = 68;
     public const ushort B8 = 69;
@@ -69,7 +69,7 @@ public static class BoardState
     public const ushort F1 = 185;
     public const ushort G1 = 186;
     public const ushort H1 = 187;
-    public static readonly ushort[] Squares = [
+    public static readonly ushort[] OnBoardSquares = [
         A8, B8, C8, D8, E8, F8, G8, H8,
         A7, B7, C7, D7, E7, F7, G7, H7,
         A6, B6, C6, D6, E6, F6, G6, H6,
@@ -79,7 +79,7 @@ public static class BoardState
         A2, B2, C2, D2, E2, F2, G2, H2,
         A1, B1, C1, D1, E1, F1, G1, H1,
     ];
-    public static readonly string[] SquareNames = [
+    public static readonly string[] OnBoardSquareNames = [
         "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8",
         "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7",
         "a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6",
@@ -89,7 +89,7 @@ public static class BoardState
         "a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2",
         "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
     ];
-    public static readonly FrozenSet<ushort> SquaresSet = FrozenSet.ToFrozenSet(Squares);
-    public static readonly FrozenDictionary<string, ushort> NamesToSquares = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(SquareNames, Squares));
-    public static readonly FrozenDictionary<ushort, string> SquaresToNames = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(Squares, SquareNames));
+    public static readonly FrozenSet<ushort> OnBoardSquaresSet = FrozenSet.ToFrozenSet(OnBoardSquares);
+    public static readonly FrozenDictionary<string, ushort> NamesToSquares = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(OnBoardSquareNames, OnBoardSquares));
+    public static readonly FrozenDictionary<ushort, string> SquaresToNames = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(OnBoardSquares, OnBoardSquareNames));
 }
