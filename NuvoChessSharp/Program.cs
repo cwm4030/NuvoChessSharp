@@ -1,4 +1,4 @@
-﻿using NuvoChessSharp.BoardState;
+﻿using NuvoChessSharp.UniversalChessInterface;
 
 namespace NuvoChessSharp;
 
@@ -6,7 +6,7 @@ public static class Program
 {
     public static void Main()
     {
-        var board = new Board();
-        board.PrintFancyBoard();
+        var uci = new Uci();
+        uci.Listen();
     }
 }
