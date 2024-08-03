@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuvoChessSharp", "NuvoChessSharp\NuvoChessSharp.csproj", "{481D1AEF-C9B2-4D0B-BBDF-C41043334A70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardState", "BoardState\BoardState.csproj", "{92385F42-8758-4A79-B116-D826565C4065}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{481D1AEF-C9B2-4D0B-BBDF-C41043334A70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{481D1AEF-C9B2-4D0B-BBDF-C41043334A70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{481D1AEF-C9B2-4D0B-BBDF-C41043334A70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{481D1AEF-C9B2-4D0B-BBDF-C41043334A70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92385F42-8758-4A79-B116-D826565C4065}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92385F42-8758-4A79-B116-D826565C4065}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92385F42-8758-4A79-B116-D826565C4065}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92385F42-8758-4A79-B116-D826565C4065}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
