@@ -144,6 +144,11 @@ public class Board
 
     public void MakeMove(Move move)
     {
+        MoveToFrom(move);
+    }
+
+    private void MoveToFrom(Move move)
+    {
         var fromPieceListIndex = SquareList[move.FromSquare];
         var toPieceListIndex = SquareList[move.ToSquare];
         PieceList[fromPieceListIndex].Location = move.ToSquare;
