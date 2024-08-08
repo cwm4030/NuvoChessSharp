@@ -99,7 +99,7 @@ public class Board
 
         var darkBackgroundColor = ConsoleColor.DarkBlue;
         var lightBackgroundColor = ConsoleColor.Blue;
-        var rowStartColor = lightBackgroundColor;
+        var rowStartColor = darkBackgroundColor;
         var currentColor = rowStartColor;
         var rowNumber = 8;
         for (ushort i = 0; i < Squares.OnBoardSquares.Length; i++)
@@ -140,6 +140,20 @@ public class Board
         Console.WriteLine("      ------------------------");
         Console.WriteLine("       a  b  c  d  e  f  g  h ");
         Console.WriteLine();
+    }
+
+    public void MakeMove(Move move)
+    {
+        var fromPieceListIndex = SquareList[move.FromSquare];
+        var toPieceListIndex = SquareList[move.ToSquare];
+        PieceList[fromPieceListIndex].Location = move.ToSquare;
+        if (toPieceListIndex != Pieces.Empty)
+        {
+            var swapIndex = PieceList[fromPieceListIndex].Color == Pieces.White ? PieceListWhiteIndex - 1 : PieceListBlackIndex - 1;
+            PieceList[toPieceListIndex] = PieceList[swapIndex];
+        }
+        SquareList[move.FromSquare] = Pieces.Empty;
+        SquareList[move.ToSquare] = fromPieceListIndex;
     }
 
     private void SetDefaultPieceList()
