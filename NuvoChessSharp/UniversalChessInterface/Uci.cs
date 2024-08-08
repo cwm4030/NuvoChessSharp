@@ -11,31 +11,52 @@ public class Uci
         var input = args.Length > 0 ? args : Input.GetInput();
         while (true)
         {
-            if (Execute(input)) break;
+            if (Execute(input, 0)) break;
             input = Input.GetInput();
         }
     }
 
-    private bool Execute(string[] input)
+    private bool Execute(string[] input, int index)
     {
-        int index = 0;
+        if (index >= input.Length)
+            return false;
         if (Quit(input, index))
             return true;
+        if (UciCommand(input, index))
+            return false;
+        if (Isready(input, index))
+            return false;
         if (Position(input, index))
             return false;
         else
-            return false;
+            return Execute(input, index + 1);
     }
 
     private static bool Quit(string[] input, int index)
     {
-        if (!(index < input.Length && input[index] == UciCommands.Quit)) return false;
+        if (!(index < input.Length && input[index] == UciInterfaceCommands.Quit)) return false;
+        return true;
+    }
+
+    private static bool UciCommand(string[] input, int index)
+    {
+        if (!(index < input.Length && input[index] == UciInterfaceCommands.Uci)) return false;
+        Console.WriteLine(UciEngineCommands.IdName);
+        Console.WriteLine(UciEngineCommands.IdAuthor);
+        Console.WriteLine(UciEngineCommands.Uciok);
+        return true;
+    }
+
+    private static bool Isready(string[] input, int index)
+    {
+        if (!(index < input.Length && input[index] == UciInterfaceCommands.Isready)) return false;
+        Console.WriteLine(UciEngineCommands.Readyok);
         return true;
     }
 
     private bool Position(string[] input, int index)
     {
-        if (!(index < input.Length && input[index] == UciCommands.Position)) return false;
+        if (!(index < input.Length && input[index] == UciInterfaceCommands.Position)) return false;
         if (StartPosition(input, index + 1))
             return true;
         else if (Print(input, index + 1))
@@ -48,14 +69,14 @@ public class Uci
 
     private bool StartPosition(string[] input, int index)
     {
-        if (!(index < input.Length && input[index] == UciCommands.StartPosition)) return false;
+        if (!(index < input.Length && input[index] == UciInterfaceCommands.StartPosition)) return false;
         Board.SetFromFen(BoardState.Fen.StartPosition);
         return true;
     }
 
     private bool Print(string[] input, int index)
     {
-        if (!(index < input.Length && input[index] == UciCommands.Print)) return false;
+        if (!(index < input.Length && input[index] == UciInterfaceCommands.Print)) return false;
         Board.PrintFancyBoard();
         return true;
     }

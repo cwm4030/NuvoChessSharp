@@ -59,32 +59,32 @@ public class Board
                         PieceListBlackIndex += 1;
                 }
             }
-
-            if (Fen.FenToColors.TryGetValue(fenColor, out var turnColor))
-                Turn = turnColor;
-            else
-                Turn = Pieces.White;
-
-            if (Fen.FenToCastleRights.TryGetValue(fenCastleRights, out var castleRights))
-                CastleRights = castleRights;
-            else
-                CastleRights = Castling.NoCastle;
-
-            if (Squares.NamesToSquares.TryGetValue(fenEnPassant, out var enPassant))
-                EnPassant = enPassant;
-            else
-                EnPassant = Pieces.OffBoard;
-
-            if (ushort.TryParse(fenHalfMove, out var halfMove))
-                HalfMove = halfMove;
-            else
-                HalfMove = 0;
-
-            if (ushort.TryParse(fenFullMove, out var fullMove))
-                FullMove = fullMove;
-            else
-                FullMove = 1;
         }
+
+        if (Fen.FenToColors.TryGetValue(fenColor, out var turnColor))
+            Turn = turnColor;
+        else
+            Turn = Pieces.White;
+
+        if (Fen.FenToCastleRights.TryGetValue(fenCastleRights, out var castleRights))
+            CastleRights = castleRights;
+        else
+            CastleRights = Castling.NoCastle;
+
+        if (Squares.NamesToSquares.TryGetValue(fenEnPassant, out var enPassant))
+            EnPassant = enPassant;
+        else
+            EnPassant = Pieces.OffBoard;
+
+        if (ushort.TryParse(fenHalfMove, out var halfMove))
+            HalfMove = halfMove;
+        else
+            HalfMove = 0;
+
+        if (ushort.TryParse(fenFullMove, out var fullMove))
+            FullMove = fullMove;
+        else
+            FullMove = 1;
     }
 
     public void PrintFancyBoard()
