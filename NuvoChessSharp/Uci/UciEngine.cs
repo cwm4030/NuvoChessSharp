@@ -1,8 +1,8 @@
 using NuvoChessSharp.BoardState;
 
-namespace NuvoChessSharp.UniversalChessInterface;
+namespace NuvoChessSharp.Uci;
 
-public class Uci
+public class UciEngine
 {
     public Board Board { get; set; } = new();
 
@@ -22,7 +22,7 @@ public class Uci
             return false;
         if (Quit(input, index))
             return true;
-        if (UciCommand(input, index))
+        if (Uci(input, index))
             return false;
         if (Isready(input, index))
             return false;
@@ -38,7 +38,7 @@ public class Uci
         return true;
     }
 
-    private static bool UciCommand(string[] input, int index)
+    private static bool Uci(string[] input, int index)
     {
         if (!(index < input.Length && input[index] == UciInterfaceCommands.Uci)) return false;
         Console.WriteLine(UciEngineCommands.IdName);

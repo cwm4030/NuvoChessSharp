@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace NuvoChessSharp.UniversalChessInterface;
+namespace NuvoChessSharp.Uci;
 
 public static class Input
 {
