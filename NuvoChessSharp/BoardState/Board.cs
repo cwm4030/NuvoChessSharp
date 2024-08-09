@@ -6,8 +6,8 @@ public class Board
     public const ushort SquareListLength = 256;
     public ushort PieceListWhiteIndex { get; set; } = Pieces.White + 1;
     public ushort PieceListBlackIndex { get; set; } = Pieces.Black + 1;
-    public Piece[] PieceList { get; } = new Piece[PieceListLength];
-    public ushort[] SquareList { get; } = new ushort[SquareListLength];
+    public ushort[] PieceList { get; } = new ushort[PieceListLength];
+    public Piece[] SquareList { get; } = new Piece[SquareListLength];
     public ushort Turn { get; set; } = Pieces.White;
     public ushort CastleRights { get; set; } = Castling.NoCastle;
     public ushort EnPassant { get; set; } = Pieces.OffBoard;
@@ -47,11 +47,13 @@ public class Board
                 var isBlack = pieceColor == Pieces.Black;
                 var isKing = pieceType == Pieces.King;
                 var pieceListIndex = isWhite ? isKing ? Pieces.White : PieceListWhiteIndex : isBlack ? isKing ? Pieces.Black : PieceListBlackIndex : 0;
+                var squaresListIndex = Squares.OnBoardSquares[boardIndex];
                 if (isWhite || isBlack)
                 {
-                    PieceList[pieceListIndex].Color = pieceColor;
-                    PieceList[pieceListIndex].PieceType = pieceType;
-                    SquareList[Squares.OnBoardSquares[boardIndex]] = (ushort)pieceListIndex;
+                    PieceList[pieceListIndex] = squaresListIndex;
+                    SquareList[squaresListIndex].Color = pieceColor;
+                    SquareList[squaresListIndex].PieceType = pieceType;
+                    SquareList[squaresListIndex].PieceListIndex = (ushort)pieceListIndex;
                     boardIndex += 1;
                     if (isWhite && !isKing)
                         PieceListWhiteIndex += 1;
@@ -117,12 +119,11 @@ public class Board
             }
 
             Console.BackgroundColor = currentColor;
-            var pieceListIndex = SquareList[Squares.OnBoardSquares[i]];
-            if (pieceListIndex == Pieces.Empty)
+            var piece = SquareList[Squares.OnBoardSquares[i]];
+            if (piece.PieceListIndex == Pieces.Empty)
                 Console.Write("   ");
             else
             {
-                var piece = PieceList[pieceListIndex];
                 if (piece.Color == Pieces.White)
                     Console.ForegroundColor = ConsoleColor.White;
                 else if (piece.Color == Pieces.Black)
@@ -144,21 +145,9 @@ public class Board
 
     public void MakeMove(Move move)
     {
-        MoveToFrom(move);
-    }
-
-    private void MoveToFrom(Move move)
-    {
-        var fromPieceListIndex = SquareList[move.FromSquare];
-        var toPieceListIndex = SquareList[move.ToSquare];
-        PieceList[fromPieceListIndex].Location = move.ToSquare;
-        if (toPieceListIndex != Pieces.Empty)
-        {
-            var swapIndex = PieceList[fromPieceListIndex].Color == Pieces.White ? PieceListWhiteIndex - 1 : PieceListBlackIndex - 1;
-            PieceList[toPieceListIndex] = PieceList[swapIndex];
-        }
-        SquareList[move.FromSquare] = Pieces.Empty;
-        SquareList[move.ToSquare] = fromPieceListIndex;
+        PieceList[SquareList[move.FromSquare].PieceListIndex] = move.ToSquare;
+        SquareList[move.ToSquare] = SquareList[move.FromSquare];
+        SquareList[move.FromSquare] = new Piece { Color = Pieces.OffBoard, PieceType = Pieces.OffBoard, PieceListIndex = Pieces.Empty };
     }
 
     private void SetDefaultPieceList()
@@ -166,15 +155,15 @@ public class Board
         PieceListWhiteIndex = Pieces.White + 1;
         PieceListBlackIndex = Pieces.Black + 1;
         for (ushort i = 0; i < PieceList.Length; i++)
-            PieceList[i] = new Piece { Color = Pieces.Empty, PieceType = Pieces.Empty, Location = Pieces.OffBoard };
+            PieceList[i] = Pieces.OffBoard;
     }
 
     private void SetDefaultSquareList()
     {
         for (ushort i = 0; i < SquareList.Length; i++)
             if (Squares.OnBoardSquaresSet.Contains(i))
-                SquareList[i] = Pieces.Empty;
+                SquareList[i] = new Piece { Color = Pieces.OffBoard, PieceType = Pieces.OffBoard, PieceListIndex = Pieces.Empty };
             else
-                SquareList[i] = Pieces.OffBoard;
+                SquareList[i] = new Piece { Color = Pieces.OffBoard, PieceType = Pieces.OffBoard, PieceListIndex = Pieces.OffBoard };
     }
 }
