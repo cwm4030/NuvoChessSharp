@@ -2,7 +2,7 @@ namespace NuvoChessSharp.BoardState;
 
 public static class Pieces
 {
-    // indexes into the piece list
+    // color types
     public const ushort OffBoard = 0;
     public const ushort Empty = 1;
     public const ushort White = 2;
@@ -17,6 +17,6 @@ public static class Pieces
     public const ushort King = 6;
 
     // Default Piece types
-    public static readonly Piece OffboardPiece = new Piece { Color = OffBoard, PieceType = OffBoard, PieceListIndex = OffBoard };
-    public static readonly Piece EmptyPiece = new Piece { Color = OffBoard, PieceType = OffBoard, PieceListIndex = Empty };
+    public static readonly Piece OffboardPiece = new() { Color = OffBoard, PieceType = OffBoard, PieceListIndex = OffBoard };
+    public static readonly Piece EmptyPiece = new() { Color = Empty, PieceType = OffBoard, PieceListIndex = OffBoard };
 }

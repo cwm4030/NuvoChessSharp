@@ -120,7 +120,7 @@ public class Board
 
             Console.BackgroundColor = currentColor;
             var piece = SquareList[Squares.OnBoardSquares[i]];
-            if (piece.PieceListIndex == Pieces.Empty)
+            if (piece.Color < Pieces.White)
                 Console.Write("   ");
             else
             {
