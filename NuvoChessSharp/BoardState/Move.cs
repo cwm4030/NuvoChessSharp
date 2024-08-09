@@ -1,8 +1,8 @@
 namespace NuvoChessSharp.BoardState;
 
-public class Move
+public struct Move
 {
-    public ushort FromSquare { get; set; } = Pieces.OffBoard;
-    public ushort ToSquare { get; set; } = Pieces.OffBoard;
-    public ushort PieceType { get; set; } = Pieces.Empty;
+    public ushort FromSquare { get; set; }
+    public ushort ToSquare { get; set; }
+    public ushort PieceType { get; set; }
 }

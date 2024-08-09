@@ -1,6 +1,6 @@
 namespace NuvoChessSharp.BoardState;
 
-public class Piece
+public struct Piece
 {
     public ushort Color { get; set; }
     public ushort PieceType { get; set; }

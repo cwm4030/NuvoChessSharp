@@ -147,7 +147,7 @@ public class Board
     {
         PieceList[SquareList[move.FromSquare].PieceListIndex] = move.ToSquare;
         SquareList[move.ToSquare] = SquareList[move.FromSquare];
-        SquareList[move.FromSquare] = new Piece { Color = Pieces.OffBoard, PieceType = Pieces.OffBoard, PieceListIndex = Pieces.Empty };
+        SquareList[move.FromSquare] = Pieces.EmptyPiece;
     }
 
     private void SetDefaultPieceList()
@@ -162,8 +162,8 @@ public class Board
     {
         for (ushort i = 0; i < SquareList.Length; i++)
             if (Squares.OnBoardSquaresSet.Contains(i))
-                SquareList[i] = new Piece { Color = Pieces.OffBoard, PieceType = Pieces.OffBoard, PieceListIndex = Pieces.Empty };
+                SquareList[i] = Pieces.EmptyPiece;
             else
-                SquareList[i] = new Piece { Color = Pieces.OffBoard, PieceType = Pieces.OffBoard, PieceListIndex = Pieces.OffBoard };
+                SquareList[i] = Pieces.OffboardPiece;
     }
 }

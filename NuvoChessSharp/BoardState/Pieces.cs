@@ -15,4 +15,8 @@ public static class Pieces
     public const ushort Rook = 4;
     public const ushort Queen = 5;
     public const ushort King = 6;
+
+    // Default Piece types
+    public static readonly Piece OffboardPiece = new Piece { Color = OffBoard, PieceType = OffBoard, PieceListIndex = OffBoard };
+    public static readonly Piece EmptyPiece = new Piece { Color = OffBoard, PieceType = OffBoard, PieceListIndex = Empty };
 }
