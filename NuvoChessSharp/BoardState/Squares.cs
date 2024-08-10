@@ -5,6 +5,17 @@ namespace NuvoChessSharp.BoardState;
 
 public static class Squares
 {
+    // square types
+    public const ushort White = 0;
+    public const ushort Black = 64;
+    public const ushort Empty = 254;
+    public const ushort OffBoard = 255;
+
+    // Default Square types
+    public static readonly Square OffBoardSquare = new() { SquareType = OffBoard, PieceType = Pieces.NoPiece, PieceListIndex = OffBoard };
+    public static readonly Square EmptySquare = new() { SquareType = Empty, PieceType = Pieces.NoPiece, PieceListIndex = OffBoard };
+
+    // square locations
     public const ushort A8 = 68;
     public const ushort B8 = 69;
     public const ushort C8 = 70;

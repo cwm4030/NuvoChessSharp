@@ -2,17 +2,18 @@ namespace NuvoChessSharp.BoardState;
 
 public class Board
 {
-    public const ushort PieceListLength = 130;
-    public const ushort SquareListLength = 256;
-    public ushort PieceListWhiteIndex { get; set; } = Pieces.White + 1;
-    public ushort PieceListBlackIndex { get; set; } = Pieces.Black + 1;
-    public ushort[] PieceList { get; } = new ushort[PieceListLength];
-    public Piece[] SquareList { get; } = new Piece[SquareListLength];
-    public ushort Turn { get; set; } = Pieces.White;
-    public ushort CastleRights { get; set; } = Castling.NoCastle;
-    public ushort EnPassant { get; set; } = Pieces.OffBoard;
-    public ushort HalfMove { get; set; } = 0;
-    public ushort FullMove { get; set; } = 1;
+    private const ushort ListLength = 256;
+    private ushort _pieceListWhiteIndex = Squares.White + 1;
+    private ushort _pieceListBlackIndex = Squares.Black + 1;
+    private readonly ushort[] _pieceList = new ushort[ListLength];
+    private readonly Square[] _squareList = new Square[ListLength];
+    private ushort _turn = Squares.White;
+    private ushort _castleRights = Castling.NoCastle;
+    private ushort _enPassant = Squares.OffBoard;
+    private ushort _halfMove = 0;
+    private ushort _fullMove = 1;
+    private readonly ushort[] _attackMap = new ushort[ListLength];
+    public ushort _checkCount = 0;
 
     public Board() => SetFromFen(Fen.StartPosition);
 
@@ -31,7 +32,7 @@ public class Board
         ushort boardIndex = 0;
         foreach (var c in fenPieceLocations)
         {
-            if (boardIndex == Squares.OnBoardSquares.Length) break;
+            if (boardIndex >= Squares.OnBoardSquares.Length) break;
 
             if (Fen.FenToIncrements.TryGetValue(c, out var increment))
             {
@@ -39,65 +40,65 @@ public class Board
                 continue;
             }
 
-            if (Fen.FenToColorPieceTypes.TryGetValue(c, out var colorPieceType))
+            if (Fen.FenToSquareAndPieceTypes.TryGetValue(c, out var colorPieceType))
             {
-                var pieceColor = colorPieceType.Item1;
+                var squareType = colorPieceType.Item1;
                 var pieceType = colorPieceType.Item2;
-                var isWhite = pieceColor == Pieces.White;
-                var isBlack = pieceColor == Pieces.Black;
+                var isWhite = squareType == Squares.White;
+                var isBlack = squareType == Squares.Black;
                 var isKing = pieceType == Pieces.King;
-                var pieceListIndex = isWhite ? isKing ? Pieces.White : PieceListWhiteIndex : isBlack ? isKing ? Pieces.Black : PieceListBlackIndex : 0;
+                var pieceListIndex = isWhite ? isKing ? Squares.White : _pieceListWhiteIndex : isBlack ? isKing ? Squares.Black : _pieceListBlackIndex : 0;
                 var squaresListIndex = Squares.OnBoardSquares[boardIndex];
                 if (isWhite || isBlack)
                 {
-                    PieceList[pieceListIndex] = squaresListIndex;
-                    SquareList[squaresListIndex].Color = pieceColor;
-                    SquareList[squaresListIndex].PieceType = pieceType;
-                    SquareList[squaresListIndex].PieceListIndex = (ushort)pieceListIndex;
+                    _pieceList[pieceListIndex] = squaresListIndex;
+                    _squareList[squaresListIndex] = new Square { SquareType = squareType, PieceType = pieceType, PieceListIndex = (ushort)pieceListIndex };
                     boardIndex += 1;
                     if (isWhite && !isKing)
-                        PieceListWhiteIndex += 1;
+                        _pieceListWhiteIndex += 1;
                     else if (isBlack && !isKing)
-                        PieceListBlackIndex += 1;
+                        _pieceListBlackIndex += 1;
                 }
             }
         }
 
         if (Fen.FenToColors.TryGetValue(fenColor, out var turnColor))
-            Turn = turnColor;
+            _turn = turnColor;
         else
-            Turn = Pieces.White;
+            _turn = Squares.White;
 
         if (Fen.FenToCastleRights.TryGetValue(fenCastleRights, out var castleRights))
-            CastleRights = castleRights;
+            _castleRights = castleRights;
         else
-            CastleRights = Castling.NoCastle;
+            _castleRights = Castling.NoCastle;
 
         if (Squares.NamesToSquares.TryGetValue(fenEnPassant, out var enPassant))
-            EnPassant = enPassant;
+            _enPassant = enPassant;
         else
-            EnPassant = Pieces.OffBoard;
+            _enPassant = Squares.OffBoard;
 
         if (ushort.TryParse(fenHalfMove, out var halfMove))
-            HalfMove = halfMove;
+            _halfMove = halfMove;
         else
-            HalfMove = 0;
+            _halfMove = 0;
 
         if (ushort.TryParse(fenFullMove, out var fullMove))
-            FullMove = fullMove;
+            _fullMove = fullMove;
         else
-            FullMove = 1;
+            _fullMove = 1;
     }
 
     public void PrintFancyBoard()
     {
-        if (!Fen.ColorsToFen.TryGetValue(Turn, out var turn)) turn = "-";
-        if (!Fen.CastleRightsToFen.TryGetValue(CastleRights, out var castleRights)) castleRights = "-";
-        if (!Squares.SquaresToNames.TryGetValue(EnPassant, out var enPassant)) enPassant = "-";
+        if (!Fen.ColorsToFen.TryGetValue(_turn, out var turn)) turn = "-";
+        if (!Fen.CastleRightsToFen.TryGetValue(_castleRights, out var castleRights)) castleRights = "-";
+        if (!Squares.SquaresToNames.TryGetValue(_enPassant, out var enPassant)) enPassant = "-";
 
         Console.WriteLine($"      Turn: {turn}");
         Console.WriteLine($"      Castle Rights: {castleRights}");
         Console.WriteLine($"      En Passant: {enPassant}");
+        Console.WriteLine($"      Half Move: {_halfMove}");
+        Console.WriteLine($"      Full Move: {_fullMove}");
 
         var darkBackgroundColor = ConsoleColor.DarkBlue;
         var lightBackgroundColor = ConsoleColor.Blue;
@@ -119,16 +120,16 @@ public class Board
             }
 
             Console.BackgroundColor = currentColor;
-            var piece = SquareList[Squares.OnBoardSquares[i]];
-            if (piece.Color < Pieces.White)
+            var square = _squareList[Squares.OnBoardSquares[i]];
+            if (square.SquareType >= Squares.Empty)
                 Console.Write("   ");
             else
             {
-                if (piece.Color == Pieces.White)
+                if (square.SquareType == Squares.White)
                     Console.ForegroundColor = ConsoleColor.White;
-                else if (piece.Color == Pieces.Black)
+                else if (square.SquareType == Squares.Black)
                     Console.ForegroundColor = ConsoleColor.Black;
-                if (!Fen.ColorPieceTypesToFenFancy.TryGetValue((piece.Color, piece.PieceType), out var fenFancy)) fenFancy = ' ';
+                if (!Fen.SquareAndPieceTypesToFenFancy.TryGetValue((square.SquareType, square.PieceType), out var fenFancy)) fenFancy = ' ';
                 Console.Write($" {fenFancy} ");
             }
             Console.ResetColor();
@@ -145,25 +146,32 @@ public class Board
 
     public void MakeMove(Move move)
     {
-        PieceList[SquareList[move.FromSquare].PieceListIndex] = move.ToSquare;
-        SquareList[move.ToSquare] = SquareList[move.FromSquare];
-        SquareList[move.FromSquare] = Pieces.EmptyPiece;
+        _pieceList[_squareList[move.FromSquare].PieceListIndex] = move.ToSquare;
+        _squareList[move.ToSquare] = _squareList[move.FromSquare];
+        _squareList[move.FromSquare] = Squares.EmptySquare;
+    }
+
+    private Move[] GenerateMoves()
+    {
+        var moves = new Move[ListLength];
+
+        return moves;
     }
 
     private void SetDefaultPieceList()
     {
-        PieceListWhiteIndex = Pieces.White + 1;
-        PieceListBlackIndex = Pieces.Black + 1;
-        for (ushort i = 0; i < PieceList.Length; i++)
-            PieceList[i] = Pieces.OffBoard;
+        _pieceListWhiteIndex = Squares.White + 1;
+        _pieceListBlackIndex = Squares.Black + 1;
+        for (ushort i = 0; i < _pieceList.Length; i++)
+            _pieceList[i] = Squares.OffBoard;
     }
 
     private void SetDefaultSquareList()
     {
-        for (ushort i = 0; i < SquareList.Length; i++)
+        for (ushort i = 0; i < _squareList.Length; i++)
             if (Squares.OnBoardSquaresSet.Contains(i))
-                SquareList[i] = Pieces.EmptyPiece;
+                _squareList[i] = Squares.EmptySquare;
             else
-                SquareList[i] = Pieces.OffboardPiece;
+                _squareList[i] = Squares.OffBoardSquare;
     }
 }

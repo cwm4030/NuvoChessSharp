@@ -5,20 +5,20 @@ namespace NuvoChessSharp.BoardState;
 
 public static class Fen
 {
-    public static readonly string[] StartPosition = ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",  "w", "KQkq",  "-", "0", "1"];
-    public static readonly (ushort, ushort)[] ColorPieceTypes = [
-        (Pieces.White, Pieces.Pawn),
-        (Pieces.White, Pieces.Knight),
-        (Pieces.White, Pieces.Bishop),
-        (Pieces.White, Pieces.Rook),
-        (Pieces.White, Pieces.Queen),
-        (Pieces.White, Pieces.King),
-        (Pieces.Black, Pieces.Pawn),
-        (Pieces.Black, Pieces.Knight),
-        (Pieces.Black, Pieces.Bishop),
-        (Pieces.Black, Pieces.Rook),
-        (Pieces.Black, Pieces.Queen),
-        (Pieces.Black, Pieces.King),
+    public static readonly string[] StartPosition = ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", "w", "KQkq", "-", "0", "1"];
+    public static readonly (ushort, ushort)[] SquareAndPieceTypes = [
+        (Squares.White, Pieces.Pawn),
+        (Squares.White, Pieces.Knight),
+        (Squares.White, Pieces.Bishop),
+        (Squares.White, Pieces.Rook),
+        (Squares.White, Pieces.Queen),
+        (Squares.White, Pieces.King),
+        (Squares.Black, Pieces.Pawn),
+        (Squares.Black, Pieces.Knight),
+        (Squares.Black, Pieces.Bishop),
+        (Squares.Black, Pieces.Rook),
+        (Squares.Black, Pieces.Queen),
+        (Squares.Black, Pieces.King),
     ];
     public static readonly char[] FenPieceTypes = [
         'P', 'N', 'B', 'R', 'Q', 'K', 'p', 'n', 'b', 'r', 'q', 'k',
@@ -37,9 +37,9 @@ public static class Fen
         '\u265B',
         '\u265A',
     ];
-    public static readonly FrozenDictionary<char, (ushort, ushort)> FenToColorPieceTypes = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(FenPieceTypes, ColorPieceTypes));
-    public static readonly FrozenDictionary<(ushort, ushort), char> ColorPieceTypesToFenFancy = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(ColorPieceTypes, FenFancyPieceTypes));
-    public static readonly ushort[] Colors = [Pieces.White, Pieces.Black];
+    public static readonly FrozenDictionary<char, (ushort, ushort)> FenToSquareAndPieceTypes = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(FenPieceTypes, SquareAndPieceTypes));
+    public static readonly FrozenDictionary<(ushort, ushort), char> SquareAndPieceTypesToFenFancy = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(SquareAndPieceTypes, FenFancyPieceTypes));
+    public static readonly ushort[] Colors = [Squares.White, Squares.Black];
     public static readonly string[] FenColors = ["w", "b"];
     public static readonly FrozenDictionary<string, ushort> FenToColors = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(FenColors, Colors));
     public static readonly FrozenDictionary<ushort, string> ColorsToFen = FrozenDictionary.ToFrozenDictionary(CollectionHelper.ToKeyValuePairs(Colors, FenColors));
