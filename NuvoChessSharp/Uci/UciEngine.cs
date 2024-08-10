@@ -4,7 +4,7 @@ namespace NuvoChessSharp.Uci;
 
 public class UciEngine
 {
-    public Board Board { get; set; } = new();
+    private readonly Board _board = new();
 
     public void Listen(string[] args)
     {
@@ -70,14 +70,14 @@ public class UciEngine
     private bool StartPosition(string[] input, int index)
     {
         if (!(index < input.Length && input[index] == UciInterfaceCommands.StartPosition)) return false;
-        Board.SetFromFen(BoardState.Fen.StartPosition);
+        _board.SetFromFen(BoardState.Fen.StartPosition);
         return true;
     }
 
     private bool Print(string[] input, int index)
     {
         if (!(index < input.Length && input[index] == UciInterfaceCommands.Print)) return false;
-        Board.PrintFancyBoard();
+        _board.PrintFancyBoard();
         return true;
     }
 
@@ -85,7 +85,7 @@ public class UciEngine
     {
         var fen = input.Skip(index).Take(6).ToArray();
         if (!(fen.Length == 6)) return false;
-        Board.SetFromFen(fen);
+        _board.SetFromFen(fen);
         return true;
     }
 }
