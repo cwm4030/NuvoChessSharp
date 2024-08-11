@@ -425,6 +425,77 @@ public class Board
             }
         }
 
+        if (sideToMove == Squares.White && checks == 0)
+        {
+            if ((_castleRights & Castling.WhiteKing) == Castling.WhiteKing
+                && _squareList[Squares.F1].SquareType == Squares.Empty
+                && _squareList[Squares.G1].SquareType == Squares.Empty
+                && (_attackMap[Squares.F1] & AttackMap.Attack) == 0
+                && (_attackMap[Squares.G1] & AttackMap.Attack) == 0)
+            {
+                moves[moveIndex] = new Move
+                {
+                    MoveType = Moves.Castle,
+                    FromSquare = Squares.E1,
+                    ToSquare = Squares.H1,
+                    PieceType = Pieces.NoPiece
+                };
+                moveIndex += 1;
+            }
+
+            if ((_castleRights & Castling.WhiteQueen) == Castling.WhiteQueen
+                && _squareList[Squares.D1].SquareType == Squares.Empty
+                && _squareList[Squares.C1].SquareType == Squares.Empty
+                && _squareList[Squares.B1].SquareType == Squares.Empty
+                && (_attackMap[Squares.D1] & AttackMap.Attack) == 0
+                && (_attackMap[Squares.C1] & AttackMap.Attack) == 0)
+            {
+                moves[moveIndex] = new Move
+                {
+                    MoveType = Moves.Castle,
+                    FromSquare = Squares.E1,
+                    ToSquare = Squares.C1,
+                    PieceType = Pieces.NoPiece
+                };
+                moveIndex += 1;
+            }
+        }
+        else
+        {
+            if ((_castleRights & Castling.BlackKing) == Castling.BlackKing
+                && _squareList[Squares.F8].SquareType == Squares.Empty
+                && _squareList[Squares.G8].SquareType == Squares.Empty
+                && (_attackMap[Squares.F8] & AttackMap.Attack) == 0
+                && (_attackMap[Squares.G8] & AttackMap.Attack) == 0)
+            {
+                moves[moveIndex] = new Move
+                {
+                    MoveType = Moves.Castle,
+                    FromSquare = Squares.E8,
+                    ToSquare = Squares.H8,
+                    PieceType = Pieces.NoPiece,
+                };
+                moveIndex += 1;
+            }
+
+            if ((_castleRights & Castling.BlackQueen) == Castling.BlackQueen
+                && _squareList[Squares.D8].SquareType == Squares.Empty
+                && _squareList[Squares.C8].SquareType == Squares.Empty
+                && _squareList[Squares.B8].SquareType == Squares.Empty
+                && (_attackMap[Squares.D8] & AttackMap.Attack) == 0
+                && (_attackMap[Squares.C8] & AttackMap.Attack) == 0)
+            {
+                moves[moveIndex] = new Move
+                {
+                    MoveType = Moves.Castle,
+                    FromSquare = Squares.E8,
+                    ToSquare = Squares.C8,
+                    PieceType = Pieces.NoPiece
+                };
+                moveIndex += 1;
+            }
+        }
+
         return (moves, moveIndex);
     }
 
