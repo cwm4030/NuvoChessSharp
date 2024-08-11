@@ -205,7 +205,7 @@ public class Board
                                 currentSquareIndex -= direction;
                                 while (currentSquareIndex != startSquareIndex)
                                 {
-                                    _attackMap[currentSquareIndex] = (ushort)(_attackMap[currentSquareIndex] & AttackMap.PotentialPin);
+                                    _attackMap[currentSquareIndex] = (ushort)(_attackMap[currentSquareIndex] | AttackMap.PotentialPin);
                                     currentSquareIndex -= direction;
                                 }
                                 break;
@@ -218,7 +218,7 @@ public class Board
                                 while (_squareList[currentSquareIndex].SquareType == Squares.Empty)
                                     currentSquareIndex = (ushort)((short)currentSquareIndex + direction);
                                 if (currentSquareIndex == sideNotToMoveKing)
-                                    _attackMap[currentSquareIndex] = (ushort)(_attackMap[currentSquareIndex] & AttackMap.Pin);
+                                    _attackMap[currentSquareIndex] = (ushort)(_attackMap[currentSquareIndex] | AttackMap.Pin);
                                 break;
                             }
                             else if (currentSquareIndex + pawnEnPassantOffset == _enPassant && squareType == sideToMove
@@ -229,7 +229,7 @@ public class Board
                                 while (_squareList[currentSquareIndex].SquareType == Squares.Empty)
                                     currentSquareIndex = (ushort)((short)currentSquareIndex + direction);
                                 if (currentSquareIndex == sideNotToMoveKing)
-                                    _attackMap[currentSquareIndex] = (ushort)(_attackMap[currentSquareIndex] & AttackMap.EnPassantPin);
+                                    _attackMap[currentSquareIndex] = (ushort)(_attackMap[currentSquareIndex] | AttackMap.EnPassantPin);
                                 break;
                             }
                             else
