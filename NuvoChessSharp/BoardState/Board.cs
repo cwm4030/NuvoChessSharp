@@ -13,7 +13,6 @@ public class Board
     private ushort _halfMove = 0;
     private ushort _fullMove = 1;
     private readonly ushort[] _attackMap = new ushort[ListLength];
-    public ushort _checkCount = 0;
 
     public Board() => SetFromFen(Fen.StartPosition);
 
@@ -144,20 +143,6 @@ public class Board
         Console.WriteLine();
     }
 
-    public void MakeMove(Move move)
-    {
-        _pieceList[_squareList[move.FromSquare].PieceListIndex] = move.ToSquare;
-        _squareList[move.ToSquare] = _squareList[move.FromSquare];
-        _squareList[move.FromSquare] = Squares.EmptySquare;
-    }
-
-    private Move[] GenerateMoves()
-    {
-        var moves = new Move[ListLength];
-
-        return moves;
-    }
-
     private void SetDefaultPieceList()
     {
         _pieceListWhiteIndex = Squares.White + 1;
@@ -173,5 +158,93 @@ public class Board
                 _squareList[i] = Squares.EmptySquare;
             else
                 _squareList[i] = Squares.OffBoardSquare;
+    }
+
+    public void MakeMove(Move move)
+    {
+        _pieceList[_squareList[move.FromSquare].PieceListIndex] = move.ToSquare;
+        _squareList[move.ToSquare] = _squareList[move.FromSquare];
+        _squareList[move.FromSquare] = Squares.EmptySquare;
+    }
+
+    private void SetAttackMap()
+    {
+        Array.Clear(_attackMap);
+        var sideToMove = _turn ^ Squares.Black;
+        var sideNotToMove = _turn;
+        var sideNotToMoveKing = _pieceList[sideNotToMove];
+        var pawnEnPassantOffset = Moves.Offsets[sideToMove == Squares.White ? 4 : 0];
+
+        for (var i = sideToMove; _pieceList[i] != Squares.OffBoard; i++)
+        {
+            var startSquareIndex = _pieceList[i];
+            var pieceType = _squareList[startSquareIndex].PieceType;
+            var isSlider = Moves.IsSlide[pieceType];
+            var offsetStart = pieceType * 8;
+            var offsetEnd = offsetStart + Moves.NumOffsets[pieceType];
+            var directions = Moves.Offsets[offsetStart..offsetEnd];
+            if (pieceType == Pieces.Pawn)
+            {
+                var pawnAttackLeft = startSquareIndex + Moves.Offsets[sideToMove == Squares.White ? 1 : 5];
+                var pawnAttackRight = startSquareIndex + Moves.Offsets[sideToMove == Squares.White ? 2 : 6];
+                var attackLeftSquareType = _squareList[pawnAttackLeft].SquareType;
+                var attackRightSquareType = _squareList[pawnAttackRight].SquareType;
+                if (attackLeftSquareType == Squares.Empty || attackLeftSquareType == sideNotToMove)
+                    _attackMap[pawnAttackLeft] += 1;
+                if (attackRightSquareType == Squares.Empty || attackRightSquareType == sideNotToMove)
+                    _attackMap[pawnAttackRight] += 1;
+            }
+            else
+            {
+                foreach (var direction in directions)
+                {
+                    if (isSlider)
+                    {
+                        var currentSquareIndex = startSquareIndex + direction;
+                        while (isSlider)
+                        {
+                            var squareType = _squareList[currentSquareIndex].SquareType;
+                            if (squareType == Squares.Empty)
+                                _attackMap[currentSquareIndex] += 1;
+                            else if (squareType == sideNotToMove)
+                            {
+                                _attackMap[currentSquareIndex] += 1;
+                                var pinIndex = currentSquareIndex;
+                                currentSquareIndex = (ushort)((short)currentSquareIndex + direction);
+                                while (_squareList[currentSquareIndex].SquareType == Squares.Empty)
+                                    currentSquareIndex = (ushort)((short)currentSquareIndex + direction);
+                                if (currentSquareIndex == sideNotToMoveKing)
+                                    _attackMap[currentSquareIndex] = (ushort)(_attackMap[currentSquareIndex] & AttackMap.Pin);
+                                break;
+                            }
+                            else if (currentSquareIndex + pawnEnPassantOffset == _enPassant && squareType == sideToMove
+                                && _squareList[currentSquareIndex].PieceType == Pieces.Pawn)
+                            {
+                                var enPassantPinIndex = currentSquareIndex;
+                                currentSquareIndex = (ushort)((short)currentSquareIndex + direction);
+                                while (_squareList[currentSquareIndex].SquareType == Squares.Empty)
+                                    currentSquareIndex = (ushort)((short)currentSquareIndex + direction);
+                                if (currentSquareIndex == sideNotToMoveKing)
+                                    _attackMap[currentSquareIndex] = (ushort)(_attackMap[currentSquareIndex] & AttackMap.EnPassantPin);
+                                break;
+                            }
+                            else
+                                break;
+                            currentSquareIndex = (ushort)((short)currentSquareIndex + direction);
+                        }
+                    }
+                    else if (_squareList[startSquareIndex].SquareType == Squares.Empty || _squareList[startSquareIndex].SquareType == sideNotToMove)
+                        _attackMap[startSquareIndex] += 1;
+                }
+            }
+        }
+    }
+
+    private Move[] GenerateMoves()
+    {
+        SetAttackMap();
+        var moves = new Move[ListLength];
+
+        return moves;
     }
 }

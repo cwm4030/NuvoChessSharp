@@ -9,14 +9,20 @@ public static class Moves
     public const ushort Castle = 8;
     public const ushort EnPassant = 16;
 
-    // 18 for each piece type, first 8 for white, second 8 for black, zero ended
-    public static readonly sbyte[] Offsets = [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-        -16, -15, -17, -32, 0, 0, 0, 0, 0, 16, 15, 17, 32, 0, 0, 0, 0, 0 // pawn
-        -18, -33, -31, -14, 18, 33, 31, 14, 0, -18, -33, -31, -14, 18, 33, 31, 14, 0 // knight
-        -17, -15, 15, 17, 0, 0, 0, 0, 0, -17, -15, 15, 17, 0, 0, 0, 0, 0, // bishop
-        -1, -16, 1, 16, 0, 0, 0, 0, 0, -1, -16, 1, 16, 0, 0, 0, 0, 0, // rook
-        -1, 16, 1, 16, -17, -15, 15, 17, 0, -1, 16, 1, 16, -17, -15, 15, 17, 0, // queen
-        -1, 16, 1, 16, -17, -15, 15, 17, 0, -1, 16, 1, 16, -17, -15, 15, 17, 0, // king
+    // whether each piece type is a sliding piece type or not
+    public static readonly bool[] IsSlide = [false, false, false, true, true, true, false];
+
+    // number of offsets for each piece type
+    public static readonly ushort[] NumOffsets = [0, 4, 8, 4, 4, 8, 8];
+
+    // 8 for each piece type, pawn - first 4 for white, next 4 for black
+    public static readonly short[] Offsets = [
+        0, 0, 0, 0, 0, 0, 0, 0, // no piece
+        -16, -15, -17, -32, 16, 15, 17, 32, // pawn
+        -18, -33, -31, -14, 18, 33, 31, 14, 0, // knight
+        -17, -15, 15, 17, 0, 0, 0, 0, 0, // bishop
+        -1, -16, 1, 16, 0, 0, 0, 0, 0, // rook
+        -1, 16, 1, 16, -17, -15, 15, 17, 0, // queen
+        -1, 16, 1, 16, -17, -15, 15, 17, 0, // king
     ];
 }
