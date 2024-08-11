@@ -460,7 +460,7 @@ public class Board
                 moveIndex += 1;
             }
         }
-        else
+        else if (sideToMove == Squares.Black && checks == 0)
         {
             if ((_castleRights & Castling.BlackKing) == Castling.BlackKing
                 && _squareList[Squares.F8].SquareType == Squares.Empty
