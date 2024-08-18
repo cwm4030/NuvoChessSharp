@@ -63,6 +63,8 @@ public class UciEngine
             return true;
         else if (Fen(input, index + 1))
             return true;
+        else if (Moves(input, index + 1))
+            return true;
         else
             return false;
     }
@@ -86,6 +88,13 @@ public class UciEngine
         var fen = input.Skip(index).Take(6).ToArray();
         if (!(fen.Length == 6)) return false;
         _board.SetFromFen(fen);
+        return true;
+    }
+
+    private bool Moves(string[] input, int index)
+    {
+        if (index >= input.Length && input[index] != "moves") return false;
+        _board.PrintMoves();
         return true;
     }
 }

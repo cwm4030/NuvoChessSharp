@@ -51,11 +51,11 @@ public static class Squares
     public const ushort A4 = 132;
     public const ushort B4 = 133;
     public const ushort C4 = 134;
-    public const ushort D4 = 136;
-    public const ushort E4 = 137;
-    public const ushort F4 = 138;
-    public const ushort G4 = 139;
-    public const ushort H4 = 140;
+    public const ushort D4 = 135;
+    public const ushort E4 = 136;
+    public const ushort F4 = 137;
+    public const ushort G4 = 138;
+    public const ushort H4 = 139;
     public const ushort A3 = 148;
     public const ushort B3 = 149;
     public const ushort C3 = 150;

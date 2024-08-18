@@ -499,6 +499,17 @@ public class Board
         return (moves, moveIndex);
     }
 
+    public void PrintMoves()
+    {
+        (Move[] moves, int count) = GenerateMoves();
+        for (var i = 0; i < count; i++)
+        {
+            Squares.SquaresToNames.TryGetValue(moves[i].FromSquare, out var fromName);
+            Squares.SquaresToNames.TryGetValue(moves[i].ToSquare, out var toName);
+            Console.WriteLine($"{i + 1} {fromName}{toName}");
+        }
+    }
+
     public void MakeMove(Move move)
     {
         _pieceList[_squareList[move.FromSquare].PieceListIndex] = move.ToSquare;
